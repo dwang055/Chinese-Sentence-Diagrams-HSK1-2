@@ -101,7 +101,8 @@ figcaption,.cap{font-size:13px;color:#4b5a50}
 .small{font-size:13px;color:#4b5a50}
 footer{text-align:center;font-size:12px;color:#7c8a80;padding:14px;border-top:1px solid var(--bd);background:#faf8f3}footer .pre{font-size:13px;color:#3d4d43;margin-bottom:6px}footer a{color:#1e7a2f;font-weight:600}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#12301b;color:#fff;padding:10px 16px;border-radius:10px;max-width:90vw;z-index:9}
-@media(max-width:820px){.wrap{flex-direction:column}aside{width:auto;max-height:none;position:static;border-right:0;border-bottom:1px solid var(--bd)}main{padding:14px}.wtt-logo{width:56px;height:56px}}
+.menubtn{display:none}
+@media(max-width:820px){.wrap{flex-direction:column}aside{display:none;width:auto;max-height:none;position:static;border-right:0;border-bottom:1px solid var(--bd)}body.menu aside{display:block}body.menu main{display:none}main{padding:14px;min-width:0}.wtt-logo{width:56px;height:56px}header{padding:10px 14px;gap:10px}.hbtn{flex-wrap:wrap;gap:6px}.hbtn button{padding:6px 11px;font-size:13px}.hbtn .menubtn{display:inline-block;background:var(--gold);color:#12301b;border-color:var(--gold);font-weight:700}}
 @media print{aside,.bar,.nav,.hbtn,footer{display:none}body{background:#fff}}
 /* rules extras */
 .parthead{font:700 12px -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#b7860b;margin:22px 0 -4px}
@@ -179,7 +180,7 @@ button[disabled]{opacity:.45;cursor:default}
 </style></head><body>
 <header><div class="wtt-logo" role="img" aria-label="Words That Think"></div>
 <div class="htxt"><div class="hk">Words THAT Think · Chinese Grammar</div><h1>Chinese Sentence Diagrams <span class="zhs">汉语句子图解</span></h1><small>New HSK 1 &amp; 2 · a visual grammar for English speakers</small></div>
-<div class="hbtn"><button data-v="rail">🚆 Rail</button><button data-v="rules">📐 Diagrams</button></div></header>
+<div class="hbtn"><button id="menu" class="menubtn" aria-expanded="false">☰ Contents</button><button data-v="rail">🚆 Rail</button><button data-v="rules">📐 Diagrams</button></div></header>
 <div class="wrap"><aside id="side"></aside><main id="main"></main></div>
 <footer><div class="pre"><b>Preview edition.</b> Spotted a mistake or an unnatural sentence? <a href="mailto:dwang055@gmail.com?subject=Chinese%20Sentence%20Diagrams%20Book%201%20%E2%80%94%20correction">Send a correction</a> · <a href="mailto:dwang055@gmail.com?subject=Notify%20me%20when%20Book%202%20(HSK%203%E2%80%934)%20is%20ready&amp;body=Please%20let%20me%20know%20when%20Book%202%20of%20Chinese%20Sentence%20Diagrams%20is%20available.">Tell me when Book 2 (HSK 3–4) is ready</a></div>Words THAT Think · Chinese Sentence Diagrams · Book 1 · © 2026 Daniel Wang · Free for personal and classroom use · Grammar scope: new HSK Bands 1–2 (GF0025-2021)</footer>
 <script>/* ───────────────────────── DATA ─────────────────────────
@@ -3436,6 +3437,8 @@ function place(wid) {
 function alertBox(t) { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 6000); }
 document.addEventListener('click', e => {
   const t = e.target; let el;
+  if (t.closest('#menu')) { const open = document.body.classList.toggle('menu'); const b = t.closest('#menu'); b.textContent = open ? '✕ Close' : '☰ Contents'; b.setAttribute('aria-expanded', open); window.scrollTo(0, 0); return; }
+  if (t.closest('aside [data-t], aside [data-v], aside [data-hsk], aside [data-q], header [data-v]') && document.body.classList.contains('menu')) { document.body.classList.remove('menu'); const b = document.getElementById('menu'); if (b) { b.textContent = '☰ Contents'; b.setAttribute('aria-expanded', false); } }
   if ((el = t.closest('[data-q]'))) return startQuiz(+el.dataset.q);
   if ((el = t.closest('[data-hsk]'))) { hskLevel = +el.dataset.hsk; view = 'hsk'; render(); window.scrollTo(0, 0); return; }
   if (view === 'quiz' && quizClick(t)) return;
@@ -3466,3 +3469,4 @@ window.__app = { pick, render, setOpts:o => { Object.assign(opts, o); render(); 
 render();
 })();
 </script></body></html>
+
